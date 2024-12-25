@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Tâches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #343a40;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f1f1f1;
+        }
+
+        .import-form {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Liste des Tâches</h1>
+        <div>
+            <!-- Lien pour exporter les tâches en CSV -->
+            <a href="{% url 'export_tasks_csv' %}" class="btn">Exporter en CSV</a>
+            <a href="{% url 'home' %}" class="btn">Accueil</a>
+        </div>
+    </div>
+
+    <!-- Table des tâches -->
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                {% comment %} <th>Description</th> {% endcomment %}
+                <th>Date d'échéance</th>
+                <th>Priorité</th>
+                <th>Complétée</th>
+                <th>Catégorie</th>
+                <th>Actions</th> <!-- Nouvelle colonne pour les actions -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td><a href="{% url 'task_detail' task.id %}">{{ task.title }}</a></td>
+                {% comment %} <td>{{ task.description }}</td> {% endcomment %}
+                <td>{{ task.due_date }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.completed }}</td>
+                <td>{{ task.category }}</td>
+                <td>
+                    <a href="{% url 'edit_task' task.id %}" class="btn">Modifier</a>
+                    <a href="{% url 'delete_task' task.id %}" class="btn" style="background-color: #dc3545;">Supprimer</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" style="text-align: center;">Aucune tâche trouvée</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <!-- Formulaire pour importer des tâches en CSV -->
+    <div class="import-form">
+        <h2>Importer des Tâches depuis un CSV</h2>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'import_tasks_csv' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Importer</button>
+        </form>
+    </div>
+</body>
+</html>

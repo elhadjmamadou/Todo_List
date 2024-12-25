@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil - To-Do List App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img.logo-image {
+            height: 40px; /* Ajustez la hauteur selon vos besoins */
+            margin-right: 10px;
+        }
+
+        .logo img.header-image {
+            height: 40px; /* Ajustez la hauteur selon vos besoins */
+            margin-right: 10px;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            margin-left: 20px;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: #0056b3;
+        }
+
+        nav a:hover {
+            background-color: #004080;
+        }
+
+        nav .button {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+
+        nav .button:hover {
+            background-color: #0056b3;
+        }
+
+        .main-content {
+            margin-top: 70px; /* Ajuste le margin-top en fonction de la hauteur de l'en-tête */
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .main-content h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .main-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .button {
+            display: inline-block;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 10px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .feature-section {
+            background-color: white;
+            padding: 20px;
+            margin: 20px auto;
+            border-radius: 10px;
+            max-width: 900px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-section h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .feature-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .feature-section ul li {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav a {
+                margin-left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <!-- Première image -->
+                <img src="https://scontent.fcky2-1.fna.fbcdn.net/v/t39.30808-6/430611348_1517329235848610_2651402227237126374_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=Rq8xOaIg69cQ7kNvgFDaXt1&_nc_ht=scontent.fcky2-1.fna&oh=00_AYCtdigy4VW9e0DtelQr2tUHizJ275XdaJrFbpQ3gTCHWQ&oe=66DEA373" alt="Header Image" class="header-image">
+                <!-- Logo de l'application -->
+                <img src="https://camo.githubusercontent.com/562caadfda67a6edc58ed018fd2cf5f36cd6b152dd2b95b9df8c93b6f6a415ee/68747470733a2f2f7777772e7177657374612e66722f696d6167652f7061727469616c2f742f612f732f32666163653631623534643563373266643464303737633765613235386666305f7461736b73756534354c2d2e6a7067" alt="Logo" class="logo-image">
+                To-Do List
+            </div>
+            <nav>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'task_list' %}" class="button">Liste des tâches</a>
+                    <a href="{% url 'create_task' %}" class="button">Créer une tâche</a>
+                    <a href="" class="button">À propos</a>
+                    <a href="" class="button">Contact</a>
+                    <!-- Formulaire de déconnexion avec méthode POST -->
+                    <form action="{% url 'logout' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="button">Déconnexion</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'signup' %}" class="button">Inscription</a>
+                    <a href="{% url 'login' %}" class="button">Connexion</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="main-content">
+        <h1>Bienvenue sur To-Do List</h1>
+        <p>Organisez et gérez vos tâches quotidiennes de manière simple et efficace.</p>
+    </div>
+
+    <section class="feature-section">
+        <h2>Fonctionnalités Principales</h2>
+        <ul>
+            <li><strong>Créer des tâches :</strong> Ajoutez de nouvelles tâches avec des détails et des échéances.</li>
+            <li><strong>Gérer vos tâches :</strong> Modifiez, supprimez ou marquez les tâches comme complètes.</li>
+            <li><strong>Suivi des progrès :</strong> Visualisez vos tâches par priorité et échéance pour une meilleure organisation.</li>
+            <li><strong>Personnalisation :</strong> Catégorisez vos tâches pour mieux les organiser (personnel, travail, etc.).</li>
+        </ul>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 To-Do List App Elhadj Mamadou Diallo</p>
+        {% comment %} <img src=""> {% endcomment %}
+    </footer>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
